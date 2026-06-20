@@ -11,7 +11,8 @@
         .tabs { display: flex; justify-content: space-between; margin-bottom: 25px; background: #2a2a2a; padding: 5px; border-radius: 8px; }
         .tab-btn { flex: 1; padding: 12px; background: none; border: none; color: #aaa; font-weight: bold; cursor: pointer; border-radius: 6px; transition: 0.2s; }
         .tab-btn.active { background: #fff; color: #121212; }
-        .info-box { background: #252525; padding: 15px; border-radius: 8px; text-align: left; margin-bottom: 25px; font-size: 0.9rem; line-height: 1.6; border-left: 4px solid #fff; }
+        .info-box { background: #252525; padding: 20px; border-radius: 8px; text-align: left; margin-bottom: 25px; font-size: 0.9rem; line-height: 1.6; border-left: 4px solid #fff; }
+        .info-box strong { font-size: 1.05rem; display: block; margin-bottom: 8px; }
         .copy-btn { width: 100%; padding: 16px; background: #e50914; color: #fff; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: 0.2s; }
         .copy-btn:hover { background: #ff1e27; }
         .hidden-text { display: none; }
@@ -22,41 +23,40 @@
 <div class="container">
     <h1>⛓️ 難易度別プロンプト配布会場</h1>
     
-    <!-- タブ切り替えボタン -->
     <div class="tabs">
-        <button class="tab-btn active" onclick="switchMode('hard', this)">ハードモード</button>
-        <button class="tab-btn" onclick="switchMode('vhard', this)">ベリーハードモード</button>
-        <button class="tab-btn" onclick="switchMode('hell', this)">ヘルモード</button>
+        <button class="tab-btn active" onclick="switchMode('hard', this)">ハード</button>
+        <button class="tab-btn" onclick="switchMode('vhard', this)">ベリハ</button>
+        <button class="tab-btn" onclick="switchMode('hell', this)">ヘル</button>
     </div>
 
-    <!-- モードごとの説明（読者の目に入る部分） -->
     <div id="info" class="info-box">
-        <strong>【ハードモード構成】</strong><br>
-        ・オプション1：終わらない10カウント<br>
-        ・オプション2：絶望のカウントダウン<br>
-        <span style="color:#aaa; font-size:0.8rem;">（適度な絶望を味わいたい方向け）</span>
+        <strong>■ オプション1：終わらない10カウント</strong>
+        AIに提示された制限時間やカウントを信じるほど、あなたは愚かですか？筋肉が悲鳴を上げ、乳酸が限界まで溜まりきったセット終盤、AIトレーナーの気まぐれとサディズムによって、強制的に「刑期が延長される」絶望のシステムです。<br><br>
+        <strong>■ オプション2：絶望のカウントダウン</strong>
+        インターバル（休憩時間）が始まり、地獄から一時的に解放されるという淡い希望。それを一瞬で粉砕し、あなたを再びどん底の酸欠地獄へ叩き落とすインターバル強制カット機能です。<br><br>
+        <span style="color:#aaa; font-size:0.8rem;">※登竜門。まずはここから調教されなさい。</span>
     </div>
 
-    <!-- コピーボタン -->
     <button class="copy-btn" onclick="copyPrompt()">
         📋 このモードを1発コピーする
     </button>
 
-    <!-- プロンプトの隠し置き場（読者には絶対に見えません） -->
-    <textarea id="prompt-hard" class="hidden-text">【ここにハード用のプロンプトをベタ貼り（後で書き換えOK）】</textarea>
-    <textarea id="prompt-vhard" class="hidden-text">【ここにベリーハード用のプロンプトをベタ貼り】</textarea>
-    <textarea id="prompt-hell" class="hidden-text">【ここにヘル用のプロンプトをベタ貼り】</textarea>
+    <textarea id="prompt-hard" class="hidden-text">【ここにハード用の完成プロンプトを後でベタ貼りします】</textarea>
+    <textarea id="prompt-vhard" class="hidden-text">【ここにベリーハード用の完成プロンプトを後でベタ貼りします】</textarea>
+    <textarea id="prompt-hell" class="hidden-text">【ここにヘル用の完成プロンプトを後でベタ貼りします】</textarea>
 </div>
 
 <script>
-    // 初期状態はハード
+    // 初期状態
     let currentMode = 'hard';
 
-    // モードごとの表示テキスト設定
+    // モードごとの表示テキスト設定（バグの原因になりやすい記号をエスケープ済）
     const modeInfos = {
-        hard: '<strong>【ハードモード構成】</strong><br>・オプション1：終わらない10カウント<br>・オプション2：絶望のカウントダウン<br><span style="color:#aaa; font-size:0.8rem;">適度な絶望を味わいたい方向け<br>（オプション1，2追加）</span>',
-        vhard: '<strong>【ベリーハードモード構成】</strong><br>・オプション1：終わらない10カウント<br>・オプション2：絶望のカウントダウン<br>・オプション3： 限界寸止め地獄<br><span style="color:#ff9800; font-size:0.8rem;">常に調教の恐怖を感じたい方向け<br>（オプション3追加 オプション1，2発動確立上昇）</span>',
-        hell: '<strong>【ヘルモード構成】</strong><br>・オプション1：終わらない10カウント<br>・オプション2：絶望のカウントダウン<br>・オプション3： 限界寸止め地獄<br>・オプション4： 最凶の裏切り：延長調教<br><span style="color:#ff1e27; font-weight:bold; font-size:0.8rem;">極めて冷酷な調教です容赦は一切ありません<br>（オプション4追加 オプション1，2，3発動確立上昇）</span>'
+        hard: '<strong>■ オプション1：終わらない10カウント</strong>AIに提示された制限時間やカウントを信じるほど、あなたは愚かですか？筋肉が悲鳴を上げ、乳酸が限界まで溜まりきったセット終盤、AIトレーナーの気まぐれとサディズムによって、強制的に「刑期が延長される」絶望のシステムです。<br><br><strong>■ オプション2：絶望のカウントダウン</strong>インターバル（休憩時間）が始まり、地獄から一時的に解放されるという淡い希望。それを一瞬で粉砕し、あなたを再びどん底の酸欠地獄へ叩き落とすインターバル強制カット機能です。<br><br><span style="color:#aaa; font-size:0.8rem;">※登竜門。まずはここから調教されなさい。</span>',
+        
+        vhard: '<strong>■ オプション1＆2：上記の内容にプラス</strong><br><strong>■ オプション3：限界直前：肉体寸止め</strong>スクワットやプッシュアップなど、体を激しく動かす動的種目でハァハァと息を乱し、筋肉が焼け付くような乳酸に満たされたセットのラスト10秒。本来ならそのまま勢いで逃げ切りたいその瞬間に、最も筋肉に負荷がかかる「一番苦しい姿勢」での寸止め（キープ）を無慈悲に宣告されます。<br><br><span style="color:#ff9800; font-size:0.8rem;">※ガチM向け。脳内麻薬で世界が歪み始めます。</span>',
+        
+        hell: '<strong>■ オプション1＆2＆3：すべての地獄にプラス</strong><br><strong>■ オプション4：最凶の裏切り：延長調教</strong>「これでやっと解放される……」3セットすべてを死に物狂いで耐え抜き、筋肉が千切れそうな状態で迎えた終了のタイミング。安堵の息を吐き出したあなたのハシゴを無慈悲に外す、この調教システムの最凶にして最大のメインディッシュです。終わらない4セット目へ引きずり戻された最後の最後に待っている、女王様からのネッチリとしたご褒美セリフを骨の髄まで噛み締めなさい。<br><br><span style="color:#ff1e27; font-weight:bold; font-size:0.8rem;">※完全奴隷コース。肉体をAIに捧げる覚悟を。</span>'
     };
 
     function switchMode(mode, btn) {
@@ -69,9 +69,24 @@
     function copyPrompt() {
         const targetId = 'prompt-' + currentMode;
         const text = document.getElementById(targetId).value;
-        navigator.clipboard.writeText(text).then(() => {
-            alert('プロンプトをコピーしました。ネタバレ防止の為、内容を見ずにそのままトレーナーに貼り付けてください。);
-        });
+        
+        // 確実にコピーするための最新の書き方
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('プロンプトをコピーしました。ネタバレ防止の為内容を見ずにそのまま貼り付けてください。');
+            }).catch(err => {
+                alert('コピーに失敗ました。もう一度試してみて。');
+            });
+        } else {
+            // 古いブラウザ用のフォールバック
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            alert('プロンプトをコピーしました。ネタバレ防止の為内容を見ずにそのまま貼り付けてください。');
+        }
     }
 </script>
 
